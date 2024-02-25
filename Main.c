@@ -2,15 +2,25 @@
 #include <ctype.h>
 #include "StrList.h"
 
+/*
+   Function: scanWord
+   -------------------
+   Scans input characters and extracts a word.
+
+   Returns:
+   - A dynamically allocated string containing the scanned word.
+   - NULL if memory allocation fails or no word is scanned.
+*/
+
 char* scanWord(){
         char* word = NULL;
         int size = 0;
         char input='\0';
-         //Skip whitespace characters
+         // Skip leading whitespace characters
         while (scanf("%c", &input) == 1 && isspace(input)){
             //do nothing
         }
-        // Read the word
+         // Scan characters until whitespace is encountered
         while(!isspace(input)){
             word = realloc(word, (size + 1) * sizeof(char));
             if(word==NULL){
@@ -18,12 +28,12 @@ char* scanWord(){
                 return NULL;}
             word[size++] = input;
 
-            // Read the next character
+            // Check if another character can be scanned
             if (scanf("%c", &input) != 1) {
                 break;
             }
         }
-        // Null-terminate the word
+           // Allocate space for null terminator
         word = realloc(word, (size + 1) * sizeof(char));
         if(word==NULL) {
             free(word);
@@ -34,6 +44,15 @@ char* scanWord(){
         return word;
 
 }
+
+/*
+   Function: newList
+   -----------------
+   Creates a new list and populates it with words entered by the user.
+
+   Parameters:
+   - theList: Pointer to a StrList object where the words will be stored.
+*/
 
 void newList(StrList* theList){
     int size;
@@ -120,70 +139,3 @@ int main(){
     StrList_free(myList);
     return 0;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//int main() {
-//    // Create a new StrList
-//    StrList* myList = StrList_alloc();
-//
-//    // Insert some elements
-//    StrList_insertLast(myList, "apple");
-//    StrList_insertLast(myList, "banana");
-//    StrList_insertLast(myList, "orange");
-//    StrList_insertLast(myList, "banana");
-//    StrList_insertLast(myList, "cada");
-//    StrList_insertLast(myList, "cara");
-//    StrList_insertLast(myList, "data");
-//    StrList_insertLast(myList, "10");
-//    StrList_insertLast(myList, "11");
-//    StrList_insertLast(myList, "2");
-//    StrList_insertAt(myList,"second", 1);
-//    // Print the list
-//    printf("Original List: ");
-//    StrList_print(myList);
-//    printf("\n");
-//
-//    // Count occurrences of "banana"
-//    //Wrong!! it give 4 instead of 2
-//    printf("Occurrences of 'banana': %d\n", StrList_count(myList, "banana"));
-//
-//    // Remove all occurrences of "banana"
-//    StrList_remove(myList, "banana");
-//    printf("List after removing 'banana': ");
-//    StrList_print(myList);
-//    printf("\n");
-//
-//    // Sort the list
-//    StrList_sort(myList);
-//    printf("Sorted List: ");
-//    StrList_print(myList);
-//    StrList_reverse(myList);
-//    printf("\n");
-//    printf("reversed List: ");
-//    StrList_print(myList);
-//    printf("\n");
-//
-//    // Check if the list is sorted
-//    printf("Is the list sorted? %s\n", StrList_isSorted(myList) ? "Yes" : "No");
-//
-//    // Free memory
-//    StrList_free(myList);
-//
-//    return 0;
-//}
