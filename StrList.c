@@ -116,7 +116,7 @@ char* StrList_firstData(const StrList* StrList) {
  */
 void StrList_print(const StrList* StrList) {
     Node *p = StrList->_head;
-    if(p==NULL){printf("isNULL");}
+    if(p==NULL){printf("\n");}
     while (p != NULL) {
         printf("%s", p->_data);
         if (p->_next != NULL) {
@@ -175,28 +175,17 @@ int StrList_count(StrList* StrList, const char* data) {
 void StrList_remove(StrList* StrList, const char* data) {
     if (StrList == NULL || data == NULL) { return; }
     Node* p0 = StrList->_head;
-    int cmp= strcmp(p0->_data,data);
-    if(cmp==0){
-        if(p0->_next==NULL) {
-            StrList_free(StrList);
-            return;
+    int i=0;
+    while(p0){
+        int cmp = strcmp(p0->_data,data);
+        if(cmp==0){
+            Node* tmp=p0->_next;
+            StrList_removeAt(StrList,i);
+            p0=tmp;
         }
         else{
-            StrList->_head=p0->_next;
-            Node_free(p0);
-        }
-    }
-    else{
-        for(int i=1; i<StrList->_size;i++){
-            Node* p1= getNodeAt(StrList,i);
-            int cmp= strcmp(p1->_data,data);
-            if(cmp==0){
-                Node* prev= getNodeAt(StrList,i-1);
-                prev->_next=p1->_next;
-                Node_free(p1);
-                StrList->_size--;
-                i--;
-            }
+            p0= p0->_next;
+            i++;
         }
     }
 }
@@ -212,6 +201,7 @@ void StrList_removeAt(StrList* StrList, int index) {
         StrList->_head = (StrList->_head)->_next;
         Node_free(head);
         StrList->_size--;
+        return;
     }
     if (index  < StrList->_size) {
         Node *p1 = getNodeAt(StrList, index - 1);
@@ -290,9 +280,9 @@ void StrList_sort( StrList* StrList) {
                 p1->_data = p2->_data;
                 p2->_data = temp;
             }
-            }
         }
     }
+}
 
 /*
  * Checks if the given list is sorted in lexicographical order
